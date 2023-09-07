@@ -7,4 +7,5 @@ export enum squareState {
     // Algorithms states
     visitedPath = 4,
     foundDestination = 5,
+    foundPath = 6,
 }
