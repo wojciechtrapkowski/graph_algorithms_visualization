@@ -2,12 +2,14 @@ import React, { useState } from "react";
 
 type NavbarProps = {
     isVisualizationRunning: boolean,
+    setIsVisualizationRunning: React.Dispatch<React.SetStateAction<boolean>>,
     selectedAlgorithm: string,
     setSelectedAlgorithm: React.Dispatch<React.SetStateAction<string>>,
     selectedSpeed : number,
     setSelectedSpeed: React.Dispatch<React.SetStateAction<number>>,
     algorithms: string[]
     handleVisualizeClick: () => void,
+    handleResetButtonClick: () => void,
 }
 
 export const Navbar = (props: NavbarProps) => {
@@ -69,6 +71,12 @@ export const Navbar = (props: NavbarProps) => {
                 style={props.isVisualizationRunning ? { backgroundColor: 'rgb(197, 197, 197)', color: '#4d4d4d'} : {}}
             >
                 Visualize
+            </button>
+            <button
+                disabled={props.isVisualizationRunning}
+                className="ml-2 mr-2 text-white px-4 py-2 rounded-md"
+                onClick={props.handleResetButtonClick}
+            > Reset board
             </button>
             </div>
         </div>

@@ -1,7 +1,10 @@
 import { squareState } from "@/states/squareState";
+import { useEffect } from "react";
+import { render } from "react-dom";
 
 export async function bfs(props : algorithmsPropsType): Promise<void> {
-  props.setIsVisualizationRunning(true);
+  await props.setIsVisualizationRunning(true);
+  
   const numRows : number = props.board.length;
   const numCols : number = props.board[0].length;
 
@@ -25,8 +28,9 @@ export async function bfs(props : algorithmsPropsType): Promise<void> {
     // Check if we've reached the destination
     if (props.board[row][col] === squareState.destination) {
       const newBoard = props.board.slice();
-      // newBoard[row][col] = squareState.foundDestination;
-      // props.setBoard([...newBoard]);
+      newBoard[row][col] = squareState.foundDestination;
+      props.setBoard([...newBoard]);
+      await new Promise((resolve) => setTimeout(resolve, props.foundDestinationDelay));
 
       let currentCell: any = { row, col, distance, parent };
       const path: Cell[] = [];
@@ -84,6 +88,6 @@ export async function bfs(props : algorithmsPropsType): Promise<void> {
       }
     }
   }
-  props.setIsVisualizationRunning(false);
+  await props.setIsVisualizationRunning(false);
   return;
 }

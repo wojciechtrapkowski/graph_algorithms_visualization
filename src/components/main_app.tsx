@@ -1,17 +1,18 @@
 'use client';
 import { bfs } from "@/algorithms/bfs";
 import { squareState } from "@/states/squareState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Board } from "./board";
 import { Square } from "./square";
 import { Navbar } from "./navbar";
-import { resetBoard } from "@/utilities/reset_board";
+import { resetBoardStates } from "@/utilities/reset_board_states";
 
 export default function MainApp() {
     // Constant values
     const numRows = 70;
     const numCols = 30;
     const pathRecreationDelay = 500;
+    const foundDestinationDelay = 1000;
     const algorithms = ["BFS", "DFS", "A*"];
     const [selectedAlgorithm, setAlgorithm] = useState("BFS");
     const [selectedSpeed, setSelectedSpeed] = useState(1);
@@ -29,40 +30,60 @@ export default function MainApp() {
 
     const sourceX = board.findIndex(row => row.includes(squareState.source));
     const sourceY = sourceX >= 0 ? board[sourceX].indexOf(squareState.source) : -1;
-    
-    const algorithmsPropsType : algorithmsPropsType = {
+
+    const algorithmsProps : algorithmsPropsType = {
         board: board, 
+        setBoard: setBoard, 
         start: [sourceX, sourceY], 
         delay: selectedSpeed,
+        foundDestinationDelay: foundDestinationDelay,
         pathRecreationDelay: pathRecreationDelay,
         isVisualizationRunning: isVisualizationRunning, 
-        setBoard: setBoard, 
-        setIsVisualizationRunning: setIsVisualizationRunning
+        setIsVisualizationRunning: setIsVisualizationRunning,
     };
+
+    function resetBoard(fullReset?: boolean) {
+        const newBoard = board.slice();
+
+        resetBoardStates(newBoard, fullReset);
+
+        if(fullReset) {
+            newBoard[0][0] = squareState.source;
+            newBoard[numRows-1][numCols-1] = squareState.destination;
+        }
+
+        setBoard([...newBoard])
+    }
 
     function handleVisualizeClick() : void {
         if(isVisualizationRunning) {
             return;
         }
-        const newBoard = board.slice();
-        resetBoard(newBoard);
-        setBoard([...newBoard])
+        resetBoard();
         switch(selectedAlgorithm) {
             case "BFS":
-                bfs(algorithmsPropsType);
+                bfs(algorithmsProps);
                 return;
         }
     }
+
+    function handleResetButtonClick() : void {
+        setIsVisualizationRunning(false);
+        resetBoard(true);
+    }
+
     return (
         <>
             <Navbar 
             isVisualizationRunning={isVisualizationRunning}
+            setIsVisualizationRunning={setIsVisualizationRunning}
             selectedAlgorithm={selectedAlgorithm} 
             setSelectedAlgorithm={setAlgorithm} 
             selectedSpeed={selectedSpeed} 
             setSelectedSpeed={setSelectedSpeed} 
             algorithms={algorithms} 
             handleVisualizeClick={handleVisualizeClick} 
+            handleResetButtonClick={handleResetButtonClick}
             />
             <Board 
             board={board} 
