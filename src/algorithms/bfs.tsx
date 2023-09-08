@@ -1,6 +1,5 @@
 import { squareState } from "@/states/squareState";
 import { useEffect } from "react";
-import { render } from "react-dom";
 
 export async function bfs(props : algorithmsPropsType): Promise<void> {
   await props.setIsVisualizationRunning(true);

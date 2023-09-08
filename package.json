@@ -1,12 +1,15 @@
 {
   "name": "path_finding_visualization",
   "version": "0.1.0",
+  "homepage": "https://wojciechtrapkowski.github.io/path_finding_visualization",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "npm run build && type nul > ./out/.nojekyll && gh-pages -d out -t true",
+    "predeploy": "npm run build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.2",
@@ -25,5 +28,8 @@
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2",
     "use-immer": "^0.9.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.0.0"
   }
 }
