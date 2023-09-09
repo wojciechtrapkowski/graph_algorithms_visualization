@@ -8,7 +8,6 @@ export async function bfs(props : algorithmsPropsType): Promise<void> {
   const numCols : number = props.board[0].length;
 
   // Define directions: up, down, left, right
-  // const directions: number[][] = [[-1, 0], [1, 0], [0, -1], [0, 1]];
   const directions: number[][] = [[0, -1], [0, 1], [-1, 0], [1, 0]];
 
   // Create a queue for BFS

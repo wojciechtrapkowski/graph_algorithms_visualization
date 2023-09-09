@@ -7,6 +7,7 @@ import { Square } from "./square";
 import { Navbar } from "./navbar";
 import { resetBoardStates } from "@/utilities/reset_board_states";
 import { dfs } from "@/algorithms/dfs";
+import { dijkstra } from "@/algorithms/djikstra";
 
 export default function MainApp() {
     // Constant values
@@ -14,7 +15,7 @@ export default function MainApp() {
     const numCols = 30;
     const pathRecreationDelay = 500;
     const foundDestinationDelay = 1000;
-    const algorithms = ["BFS", "DFS", "A*"];
+    const algorithms = ["BFS", "DFS", "Djikstra", "A*"];
     const [selectedAlgorithm, setAlgorithm] = useState("BFS");
     const [selectedSpeed, setSelectedSpeed] = useState(1);
     const [isVisualizationRunning, setIsVisualizationRunning] = useState(false);
@@ -67,6 +68,9 @@ export default function MainApp() {
                 return;
             case "DFS":
                 dfs(algorithmsProps);
+                return;
+            case "Djikstra":
+                dijkstra(algorithmsProps);
                 return;
         }
     }
