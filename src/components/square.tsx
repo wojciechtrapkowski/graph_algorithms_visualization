@@ -25,7 +25,7 @@ export const Square = (props : SquareProps) => {
   else if (props.fieldValue == squareState.source) {
     return (
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-    width="21.875px" height="21.875px" viewBox="0 0 21.875 21.875" enable-background="new 0 0 21.875 21.875">
+    width="21.875px" height="21.875px" viewBox="0 0 21.875 21.875" enableBackground="new 0 0 21.875 21.875">
     <g id="Layer_4">
     </g>
     <g id="Layer_2">

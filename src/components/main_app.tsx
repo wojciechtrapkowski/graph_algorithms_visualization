@@ -6,10 +6,11 @@ import { Board } from "./board";
 import { Square } from "./square";
 import { Navbar } from "./navbar";
 import { resetBoardStates } from "@/utilities/reset_board_states";
+import { dfs } from "@/algorithms/dfs";
 
 export default function MainApp() {
     // Constant values
-    const numRows = 70;
+    const numRows = 50;
     const numCols = 30;
     const pathRecreationDelay = 500;
     const foundDestinationDelay = 1000;
@@ -63,6 +64,9 @@ export default function MainApp() {
         switch(selectedAlgorithm) {
             case "BFS":
                 bfs(algorithmsProps);
+                return;
+            case "DFS":
+                dfs(algorithmsProps);
                 return;
         }
     }
