@@ -6,6 +6,11 @@ export function getColor(state : squareState) : string {
             return "green";
         case squareState.foundPath:
             return "yellow";
+        case squareState.foundDestination:
+            return "yellow";
+        // TODO: Implement
+        // case squareState.foundSource:
+        //     return "yellow";
     }
     return "";
 }

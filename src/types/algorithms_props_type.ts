@@ -1,6 +1,7 @@
 type algorithmsPropsType = {
     board: number[][], 
-    start: number[], 
+    start: number[],
+    destination: number[],
     delay: number,
     foundDestinationDelay: number,
     pathRecreationDelay: number,

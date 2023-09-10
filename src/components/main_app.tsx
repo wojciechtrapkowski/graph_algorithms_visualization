@@ -8,10 +8,11 @@ import { Navbar } from "./navbar";
 import { resetBoardStates } from "@/utilities/reset_board_states";
 import { dfs } from "@/algorithms/dfs";
 import { dijkstra } from "@/algorithms/djikstra";
+import { aStar } from "@/algorithms/a_star";
 
 export default function MainApp() {
     // Constant values
-    const numRows = 50;
+    const numRows = 40;
     const numCols = 30;
     const pathRecreationDelay = 500;
     const foundDestinationDelay = 1000;
@@ -33,10 +34,21 @@ export default function MainApp() {
     const sourceX = board.findIndex(row => row.includes(squareState.source));
     const sourceY = sourceX >= 0 ? board[sourceX].indexOf(squareState.source) : -1;
 
+    const destinationX = board.findIndex(row => row.includes(squareState.destination));
+    let destinationY  = -1;
+
+    if(destinationX >= 0) {
+        destinationY =  board[destinationX].indexOf(squareState.destination);
+        if(destinationY == -1) {
+            destinationY = board[destinationX].indexOf(squareState.foundDestination);
+        }
+    }
+
     const algorithmsProps : algorithmsPropsType = {
         board: board, 
         setBoard: setBoard, 
-        start: [sourceX, sourceY], 
+        start: [sourceX, sourceY],
+        destination: [destinationX, destinationY],
         delay: selectedSpeed,
         foundDestinationDelay: foundDestinationDelay,
         pathRecreationDelay: pathRecreationDelay,
@@ -71,6 +83,9 @@ export default function MainApp() {
                 return;
             case "Djikstra":
                 dijkstra(algorithmsProps);
+                return;
+            case "A*":
+                aStar(algorithmsProps);
                 return;
         }
     }
