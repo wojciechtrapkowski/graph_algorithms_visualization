@@ -73,5 +73,4 @@ export async function bfs(props : AlgorithmsPropsType): Promise<void> {
     }
   }
   await props.setIsVisualizationRunning(false);
-  return;
 }

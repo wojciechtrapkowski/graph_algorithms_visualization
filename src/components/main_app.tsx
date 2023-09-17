@@ -7,10 +7,11 @@ import { Square } from "./square";
 import { Navbar } from "./navbar";
 import { resetBoardStates } from "@/utilities/reset_board_states";
 import { dfs } from "@/algorithms/dfs";
-import { dijkstra } from "@/algorithms/djikstra";
+import { dijkstra } from "@/algorithms/dijkstra";
 import { aStar } from "@/algorithms/a_star";
 import { SquareType } from "@/types/square_type";
 import { AlgorithmsPropsType } from "./props/algorithms_props";
+import { AlgorithmDescription } from "./algorithm_description";
 
 export default function MainApp() {
     // Constant values
@@ -19,7 +20,7 @@ export default function MainApp() {
     const pathRecreationDelay = 500;
     const foundDestinationDelay = 1000;
     const weightedNodeWeight = 15;
-    const algorithms = ["BFS", "DFS", "Djikstra", "A*"];
+    const algorithms = ["BFS", "DFS", "Dijkstra", "A*"];
     const [selectedAlgorithm, setAlgorithm] = useState("BFS");
     const [selectedSpeed, setSelectedSpeed] = useState(1);
     const [isVisualizationRunning, setIsVisualizationRunning] = useState(false);
@@ -102,7 +103,7 @@ export default function MainApp() {
             case "DFS":
                 dfs(algorithmsProps);
                 return;
-            case "Djikstra":
+            case "Dijkstra":
                 dijkstra(algorithmsProps);
                 return;
             case "A*":
@@ -135,6 +136,8 @@ export default function MainApp() {
                 handleVisualizeClick={handleVisualizeClick} 
                 handleResetButtonClick={handleResetButtonClick}
             />
+            <AlgorithmDescription 
+            algorithm={selectedAlgorithm} />
             <Board 
                 board={board} 
                 setBoard={setBoard} 

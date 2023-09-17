@@ -7,7 +7,7 @@ import { ObstacleSVG } from "./icons/obstacle";
 import { SourceSVG } from "./icons/source";
 import { WeightNodeSVG } from "./icons/weight_node";
 import { SquareProps } from "./props/square_props";
-import './square.css';
+import './css/square.css';
 
 export const Square = (props : SquareProps) => {
   if (props.cell.state === SquareState.source) {

@@ -2,9 +2,9 @@ import { SquareState } from "@/states/square_state";
 import { SquareType } from "@/types/square_type";
 
 export function resetBoardStates(board: SquareType[][], fullReset? : boolean): void {
-    let classToRemove = ["path", "visited", "found-destination"];
+    let classesToRemove = ["path", "visited", "found-destination"];
     if (fullReset) {
-        classToRemove.push("destination");
+        classesToRemove.push("destination");
     }
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
@@ -12,7 +12,7 @@ export function resetBoardStates(board: SquareType[][], fullReset? : boolean): v
                 board[i][j].state = SquareState.path;
             }
             board[i][j].classes = board[i][j].classes.filter(
-                (className) => !classToRemove.includes(className)
+                (className) => !classesToRemove.includes(className)
             );
         }
     }
