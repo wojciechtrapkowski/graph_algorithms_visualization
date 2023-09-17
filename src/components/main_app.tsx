@@ -12,6 +12,7 @@ import { aStar } from "@/algorithms/a_star";
 import { SquareType } from "@/types/square_type";
 import { AlgorithmsPropsType } from "./props/algorithms_props";
 import { AlgorithmDescription } from "./algorithm_description";
+import { Legend } from "./legend";
 
 export default function MainApp() {
     // Constant values
@@ -146,5 +147,6 @@ export default function MainApp() {
                 getIsWeightNodePicked={getIsWeightNodePicked}
                 weightedNodeWeight={weightedNodeWeight}
             />
+            <Legend />
         </>
 );}

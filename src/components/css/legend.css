@@ -1,0 +1,15 @@
+.legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem;
+}
+.legend div {
+    display: flex;
+    align-items: center;
+}
+.legend svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.75rem;
+}
