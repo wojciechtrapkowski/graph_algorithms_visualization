@@ -1,7 +1,15 @@
-import { squareState } from "@/states/squareState";
+import { AlgorithmsPropsType } from "@/components/props/algorithms_props";
+import { SquareState } from "@/states/square_state";
+import { Cell } from "@/types/cell_type";
+import { markAsVisited } from "@/utilities/mark_cell_as_visited";
+import { recreatePath } from "../utilities/recreate_path";
 
-// Define a function for Dijkstra's algorithm
-export async function dijkstra(props: algorithmsPropsType): Promise<void> {
+export async function dijkstra(props: AlgorithmsPropsType): Promise<void> {
+    for(let i=0; i<props.board.length; i++) {
+        for(let j=0; j<props.board[i].length; j++) {
+            console.log(props.board[i][j].weight);
+        }
+    }
     await props.setIsVisualizationRunning(true);
 
     const numRows: number = props.board.length;
@@ -35,36 +43,12 @@ export async function dijkstra(props: algorithmsPropsType): Promise<void> {
         const currentCell: Cell = priorityQueue.shift() as Cell;
 
         // Check if we've reached the destination
-        if (props.board[currentCell.row][currentCell.col] === squareState.destination) {
-            const newBoard = props.board.slice();
-            newBoard[currentCell.row][currentCell.col] = squareState.foundDestination;
-            props.setBoard([...newBoard]);
-            await new Promise((resolve) => setTimeout(resolve, props.foundDestinationDelay));
-
-            let pathCell: any = currentCell;
-            const path: Cell[] = [];
-
-            // Recreate the shortest path
-            while (pathCell) {
-                if (props.board[pathCell.row][pathCell.col] === squareState.visitedPath) {
-                    newBoard[pathCell.row][pathCell.col] = squareState.foundPath;
-                    props.setBoard([...newBoard]);
-                    await new Promise((resolve) => setTimeout(resolve, props.delay));
-                }
-
-                path.unshift(pathCell);
-                pathCell = pathCell.parent;
-            }
-
-            props.setIsVisualizationRunning(false);
+        if (props.board[currentCell.row][currentCell.col].state === SquareState.destination) {
+            recreatePath(currentCell, props);
             return;
         }
 
-        if(props.board[currentCell.row][currentCell.col] === squareState.path) {
-            const newBoard = props.board.slice();
-            newBoard[currentCell.row][currentCell.col] = squareState.visitedPath;
-            props.setBoard([...newBoard]);
-        }
+        markAsVisited(currentCell, props);
 
         // Explore all possible directions
         for (const [dx, dy] of directions) {
@@ -78,12 +62,10 @@ export async function dijkstra(props: algorithmsPropsType): Promise<void> {
                 newCol >= 0 &&
                 newCol < numCols
             ) {
-                if (props.board[newRow][newCol] !== squareState.obstacle) {
+                if (props.board[newRow][newCol].state !== SquareState.obstacle) {
 
                     // Calculate the tentative distance to the neighbor
-                    // Assuming unit weights 
-                    // TODO: Change when weighted nodes will be implemented
-                    let tentativeDistance: number = distances[currentCell.row][currentCell.col] + 1;
+                    let tentativeDistance: number = distances[currentCell.row][currentCell.col] + props.board[newRow][newCol].weight;
 
                     // Check if the new distance is shorter than the current distance
                     if (tentativeDistance < distances[newRow][newCol]) {
@@ -100,7 +82,7 @@ export async function dijkstra(props: algorithmsPropsType): Promise<void> {
                         await new Promise((resolve) => setTimeout(resolve, props.delay));
                     }
 
-                    if(props.board[newRow][newCol] === squareState.destination) {
+                    if(props.board[newRow][newCol].state === SquareState.destination) {
                         break;
                     }
                 }

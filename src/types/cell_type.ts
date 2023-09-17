@@ -1,4 +1,4 @@
-type Cell = {
+export type Cell = {
     row: number;
     col: number;
     distance: number;

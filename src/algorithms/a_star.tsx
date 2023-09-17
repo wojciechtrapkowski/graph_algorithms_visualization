@@ -1,6 +1,11 @@
-import { squareState } from "@/states/squareState";
+import { SquareState } from "@/states/square_state";
+import { AlgorithmsPropsType } from "@/components/props/algorithms_props";
+import { Cell } from "@/types/cell_type";
+import { recreatePath } from "../utilities/recreate_path";
+import { markAsVisited } from "@/utilities/mark_cell_as_visited";
+import { heuristic } from "@/utilities/heuristic";
 
-export async function aStar(props: algorithmsPropsType): Promise<void> {
+export async function aStar(props: AlgorithmsPropsType): Promise<void> {
     await props.setIsVisualizationRunning(true);
 
     const numRows: number = props.board.length;
@@ -39,36 +44,12 @@ export async function aStar(props: algorithmsPropsType): Promise<void> {
         const currentCell: Cell = openSet.shift() as Cell;
 
         // Check if we've reached the destination
-        if (props.board[currentCell.row][currentCell.col] === squareState.destination) {
-            const newBoard = props.board.slice();
-            newBoard[currentCell.row][currentCell.col] = squareState.foundDestination;
-            props.setBoard([...newBoard]);
-            await new Promise((resolve) => setTimeout(resolve, props.foundDestinationDelay));
-
-            let pathCell: any = currentCell;
-            const path: Cell[] = [];
-
-            // Recreate the shortest path
-            while (pathCell) {
-                if (props.board[pathCell.row][pathCell.col] === squareState.visitedPath) {
-                    newBoard[pathCell.row][pathCell.col] = squareState.foundPath;
-                    props.setBoard([...newBoard]);
-                    await new Promise((resolve) => setTimeout(resolve, props.delay));
-                }
-
-                path.unshift(pathCell);
-                pathCell = pathCell.parent;
-            }
-
-            props.setIsVisualizationRunning(false);
+        if (props.board[currentCell.row][currentCell.col].state === SquareState.destination) {
+            recreatePath(currentCell, props)
             return;
         }
 
-        if (props.board[currentCell.row][currentCell.col] === squareState.path) {
-            const newBoard = props.board.slice();
-            newBoard[currentCell.row][currentCell.col] = squareState.visitedPath;
-            props.setBoard([...newBoard]);
-        }
+        markAsVisited(currentCell, props);
 
         // Explore all possible directions
         for (const [dx, dy] of directions) {
@@ -82,13 +63,11 @@ export async function aStar(props: algorithmsPropsType): Promise<void> {
                 newCol >= 0 &&
                 newCol < numCols
             ) {
-                if (props.board[newRow][newCol] !== squareState.obstacle) {
+                if (props.board[newRow][newCol].state !== SquareState.obstacle) {
 
                     // Calculate the tentative G-score
-                    // Assuming unit weights 
-                    // TODO: Change when weighted nodes will be implemented
                     const tentativeGScore: number =
-                        gScores[currentCell.row][currentCell.col] + 1;
+                        gScores[currentCell.row][currentCell.col] + props.board[newRow][newCol].weight;
 
                     // Check if the new F-score is better than the current F-score
                     if (tentativeGScore < gScores[newRow][newCol]) {
@@ -106,7 +85,7 @@ export async function aStar(props: algorithmsPropsType): Promise<void> {
                         await new Promise((resolve) => setTimeout(resolve, props.delay));
                     }
 
-                    if (props.board[newRow][newCol] === squareState.destination) {
+                    if (props.board[newRow][newCol].state === SquareState.destination) {
                         break;
                     }
                 }
@@ -115,11 +94,4 @@ export async function aStar(props: algorithmsPropsType): Promise<void> {
     }
 
     await props.setIsVisualizationRunning(false);
-}
-
-// Heuristic function (Manhattan distance)
-function heuristic(source: number[], destination: number[]): number {
-    return (
-        Math.abs(source[0] - destination[0]) + Math.abs(source[1] - destination[1])
-    );
 }

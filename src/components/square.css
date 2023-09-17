@@ -1,21 +1,35 @@
-.scaling-svg {
-    animation: scaleAnimation 1s ease-in-out forwards; /* Adjust animation duration as needed */
+.destination svg {
+  fill: #2a2a2a;
+}
+
+.visited {
+  background-color: green;
+}
+
+.path {
+  background-color: yellow;
+}
+
+.found-destination svg {
+  fill: #b81e1e;
+  color: #b81e1e;
+  animation: scaleAnimation 1s ease-in-out forwards; 
+}
+
+@keyframes scaleAnimation {
+  0% {
+    transform:scale(1.2);
   }
-  
-  @keyframes scaleAnimation {
-    0% {
-      transform:scale(1.2);
-    }
-    25% {
-      transform:scale(1.4);
-    }
-    50% {
-      transform: scale(1.5);
-    }
-    75% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform:scale(1);
-    }
+  25% {
+    transform:scale(1.4);
   }
+  50% {
+    transform: scale(1.5);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform:scale(1);
+  }
+}

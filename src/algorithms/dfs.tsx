@@ -1,7 +1,11 @@
-import { squareState } from "@/states/squareState";
+import { SquareState } from "@/states/square_state";
+import { AlgorithmsPropsType } from "@/components/props/algorithms_props";
+import { Cell } from "@/types/cell_type";
 import { useEffect } from "react";
+import { recreatePath } from "../utilities/recreate_path";
+import { markAsVisited } from "@/utilities/mark_cell_as_visited";
 
-export async function dfs(props: algorithmsPropsType): Promise<void> {
+export async function dfs(props: AlgorithmsPropsType): Promise<void> {
     await props.setIsVisualizationRunning(true);
 
     const numRows: number = props.board.length;
@@ -11,8 +15,10 @@ export async function dfs(props: algorithmsPropsType): Promise<void> {
     
     // Create a stack for DFS
     const stack: Cell[] = [];
-    stack.push({ row: props.start[0], col: props.start[1], distance: 0, parent: null });
+    const startingCell: Cell = {row: props.start[0], col: props.start[1], distance: 0, parent: null};
 
+    stack.push(startingCell);
+  
     // Mark the start cell as visited
     const visited: boolean[][] = Array.from({ length: numRows }, () =>
         Array(numCols).fill(false)
@@ -21,45 +27,22 @@ export async function dfs(props: algorithmsPropsType): Promise<void> {
     visited[props.start[0]][props.start[1]] = true;
 
     while (stack.length > 0) {
-        const { row, col, distance, parent } = stack.pop() as Cell;
-
-        if(props.board[row][col] === squareState.path) {
-            const newBoard = props.board.slice();
-            newBoard[row][col] = squareState.visitedPath;
-            props.setBoard([...newBoard]);
-        }
+        const currentCell = stack.pop() as Cell;
 
         // Check if we've reached the destination
-        if (props.board[row][col] === squareState.destination) {
-            const newBoard = props.board.slice();
-            newBoard[row][col] = squareState.foundDestination;
-            props.setBoard([...newBoard]);
-            await new Promise((resolve) => setTimeout(resolve, props.foundDestinationDelay));
-
-            let currentCell: any = { row, col, distance, parent };
-            const path: Cell[] = [];
-
-            // Recreate path
-            while (currentCell) {
-                if (props.board[currentCell.row][currentCell.col] === squareState.visitedPath) {
-                    newBoard[currentCell.row][currentCell.col] = squareState.foundPath;
-                    props.setBoard([...newBoard]);
-                    await new Promise((resolve) => setTimeout(resolve, props.delay));
-                }
-
-                path.unshift(currentCell);
-                currentCell = currentCell.parent;
-            }
-            props.setIsVisualizationRunning(false);
+        if (props.board[currentCell.row][currentCell.col].state === SquareState.destination) {
+            recreatePath(currentCell, props); 
             return;
         }
 
-        visited[row][col] = true;
+        markAsVisited(currentCell, props);
+
+        visited[currentCell.row][currentCell.col] = true;
 
         // Explore all possible directions
         for (const [dx, dy] of directions) {
-            const newRow: number = row + dx;
-            const newCol: number = col + dy;
+            const newRow: number = currentCell.row + dx;
+            const newCol: number = currentCell.col + dy;
 
             // Check if the new position is within the board and not visited
             if (
@@ -70,20 +53,19 @@ export async function dfs(props: algorithmsPropsType): Promise<void> {
                 !visited[newRow][newCol]
             ) {
 
-                if (props.board[newRow][newCol] !== squareState.obstacle) {
+                if (props.board[newRow][newCol].state !== SquareState.obstacle) {
                     // Push new cell onto the stack
                     stack.push({
                         row: newRow,
                         col: newCol,
-                        distance: distance + 1,
-                        parent: { row, col, distance, parent },
+                        distance: currentCell.distance + props.board[newRow][newCol].weight,
+                        parent: currentCell,
                     });
 
                     await new Promise((resolve) => setTimeout(resolve, props.delay));
                 }
             }
         }
-        }
+    }
     await props.setIsVisualizationRunning(false);
-    return;
 }

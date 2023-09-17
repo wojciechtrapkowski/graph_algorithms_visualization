@@ -1,18 +1,19 @@
-import { squareState } from "@/states/squareState";
+import { SquareState } from "@/states/square_state";
+import { SquareType } from "@/types/square_type";
 
-export function resetBoardStates(board: number[][], fullReset? : boolean): void {
+export function resetBoardStates(board: SquareType[][], fullReset? : boolean): void {
+    let classToRemove = ["path", "visited", "found-destination"];
+    if (fullReset) {
+        classToRemove.push("destination");
+    }
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
-            if(board[i][j] === squareState.foundDestination) {
-                board[i][j] = squareState.destination;
+            if (fullReset === true) {
+                board[i][j].state = SquareState.path;
             }
-            if (
-                (board[i][j] !== squareState.source &&
-                board[i][j] !== squareState.destination &&
-                board[i][j] !== squareState.obstacle ) || fullReset === true
-            ) {
-                board[i][j] = squareState.path;
-            }
+            board[i][j].classes = board[i][j].classes.filter(
+                (className) => !classToRemove.includes(className)
+            );
         }
     }
 }
