@@ -1,18 +1,20 @@
 'use client';
-import { bfs } from "@/algorithms/bfs";
 import { SquareState } from "@/states/square_state";
 import { useEffect, useState } from "react";
 import { Board } from "./board";
 import { Square } from "./square";
 import { Navbar } from "./navbar";
 import { resetBoardStates } from "@/utilities/reset_board_states";
-import { dfs } from "@/algorithms/dfs";
-import { dijkstra } from "@/algorithms/dijkstra";
-import { aStar } from "@/algorithms/a_star";
+import { dijkstra } from "@/algorithms/path_finding/dijkstra";
 import { SquareType } from "@/types/square_type";
 import { AlgorithmsPropsType } from "./props/algorithms_props";
 import { AlgorithmDescription } from "./algorithm_description";
 import { Legend } from "./legend";
+import { bfs } from "@/algorithms/path_finding/bfs";
+import { dfs } from "@/algorithms/path_finding/dfs";
+import { aStar } from "@/algorithms/path_finding/a_star";
+import { generateRandomMaze } from "@/algorithms/maze_generation/random";
+import { generateRandomizedDFSMaze } from "@/algorithms/maze_generation/randomized_dfs";
 
 export default function MainApp() {
     // Constant values
@@ -21,8 +23,10 @@ export default function MainApp() {
     const pathRecreationDelay = 500;
     const foundDestinationDelay = 1000;
     const weightedNodeWeight = 15;
-    const algorithms = ["BFS", "DFS", "Dijkstra", "A*"];
-    const [selectedAlgorithm, setAlgorithm] = useState("BFS");
+    const pathfindingAlgorithms = ["BFS", "DFS", "Dijkstra", "A*"];
+    const mazeGenerationAlgorithms = ["Random", "Randomized DFS"];
+    const [selectedPathFindingAlgorithm, setSelectedPathFindingAlgorithm] = useState("BFS");
+    const [selectedMazeGenerationAlgorithm, setSelectedMazeGenerationAlgorithm] = useState("Random");
     const [selectedSpeed, setSelectedSpeed] = useState(1);
     const [isVisualizationRunning, setIsVisualizationRunning] = useState(false);
     const [isWeightNodePicked, setIsWeightNodePicked] = useState(false);
@@ -78,26 +82,14 @@ export default function MainApp() {
         setIsVisualizationRunning: setIsVisualizationRunning,
     };
 
-    function resetBoard(fullReset?: boolean) {
-        const newBoard = board.slice();
-
-        resetBoardStates(newBoard, fullReset);
-
-        if(fullReset) {
-            newBoard[0][0].state = SquareState.source;
-            newBoard[numRows-1][numCols-1].state = SquareState.destination;
-            newBoard[numRows-1][numCols-1].classes = ["destination"];
-        }
-
-        setBoard([...newBoard])
-    }
-
     function handleVisualizeClick() : void {
         if(isVisualizationRunning) {
             return;
         }
-        resetBoard();
-        switch(selectedAlgorithm) {
+        const newBoard = [...board];
+        resetBoardStates(newBoard);
+        setBoard([...newBoard]);
+        switch(selectedPathFindingAlgorithm) {
             case "BFS":
                 bfs(algorithmsProps);
                 return;
@@ -113,9 +105,27 @@ export default function MainApp() {
         }
     }
 
+    function handleGenerateMazeClick() : void {
+        if(isVisualizationRunning) {
+            return;
+        }
+
+        switch(selectedMazeGenerationAlgorithm) {
+            case "Random":
+                generateRandomMaze(algorithmsProps, isWeightNodePicked);
+                return;
+            case "Randomized DFS":
+                generateRandomizedDFSMaze(algorithmsProps, isWeightNodePicked);
+                return;
+        }
+    }
+
+
     function handleResetButtonClick() : void {
         setIsVisualizationRunning(false);
-        resetBoard(true);
+        const newBoard = [...board];
+        resetBoardStates(newBoard, true);
+        setBoard([...newBoard]);
     }
 
     function getIsWeightNodePicked() : boolean {
@@ -127,18 +137,28 @@ export default function MainApp() {
             <Navbar 
                 isVisualizationRunning={isVisualizationRunning}
                 setIsVisualizationRunning={setIsVisualizationRunning}
-                selectedAlgorithm={selectedAlgorithm} 
-                setSelectedAlgorithm={setAlgorithm} 
+
+                selectedPathFindingAlgorithm={selectedPathFindingAlgorithm} 
+                setSelectedPathFindingAlgorithm={setSelectedPathFindingAlgorithm} 
+
+                selectedMazeGenerationAlgorithm={selectedMazeGenerationAlgorithm} 
+                setSelectedMazeGenerationAlgorithm={setSelectedMazeGenerationAlgorithm} 
+
                 selectedSpeed={selectedSpeed} 
                 setSelectedSpeed={setSelectedSpeed} 
+
                 isWeightNodeClicked={isWeightNodePicked}
                 updateWeightNodeClicked={() => setIsWeightNodePicked(!isWeightNodePicked)}
-                algorithms={algorithms} 
+
+                pathfindingAlgorithms={pathfindingAlgorithms} 
+                mazeGenerationAlgorithms={mazeGenerationAlgorithms}
+
+                handleGenerateMazeClick={handleGenerateMazeClick}
                 handleVisualizeClick={handleVisualizeClick} 
                 handleResetButtonClick={handleResetButtonClick}
             />
             <AlgorithmDescription 
-            algorithm={selectedAlgorithm} />
+            algorithm={selectedPathFindingAlgorithm} />
             <Board 
                 board={board} 
                 setBoard={setBoard} 

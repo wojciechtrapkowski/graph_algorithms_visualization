@@ -1,9 +1,9 @@
 import { SquareState } from "@/states/square_state";
 import { AlgorithmsPropsType } from "@/components/props/algorithms_props";
 import { Cell } from "@/types/cell_type";
-import { recreatePath } from "../utilities/recreate_path";
 import { markAsVisited } from "@/utilities/mark_cell_as_visited";
 import { heuristic } from "@/utilities/heuristic";
+import { recreatePath } from "@/utilities/recreate_path";
 
 export async function aStar(props: AlgorithmsPropsType): Promise<void> {
     await props.setIsVisualizationRunning(true);

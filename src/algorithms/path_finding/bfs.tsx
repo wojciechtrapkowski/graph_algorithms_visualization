@@ -2,7 +2,7 @@ import { SquareState } from "@/states/square_state";
 import { AlgorithmsPropsType } from "@/components/props/algorithms_props";
 import { Cell } from "@/types/cell_type";
 import { useEffect } from "react";
-import { recreatePath } from "../utilities/recreate_path";
+import { recreatePath } from "../../utilities/recreate_path";
 import { markAsVisited } from "@/utilities/mark_cell_as_visited";
 
 export async function bfs(props : AlgorithmsPropsType): Promise<void> {

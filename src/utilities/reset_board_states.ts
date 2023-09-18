@@ -3,6 +3,8 @@ import { SquareType } from "@/types/square_type";
 
 export function resetBoardStates(board: SquareType[][], fullReset? : boolean): void {
     let classesToRemove = ["path", "visited", "found-destination"];
+    let numRows = board.length;
+    let numCols = board[0].length;
     if (fullReset) {
         classesToRemove.push("destination");
     }
@@ -15,5 +17,10 @@ export function resetBoardStates(board: SquareType[][], fullReset? : boolean): v
                 (className) => !classesToRemove.includes(className)
             );
         }
+    }
+    if(fullReset) {
+        board[0][0].state = SquareState.source;
+        board[numRows-1][numCols-1].state = SquareState.destination;
+        board[numRows-1][numCols-1].classes = ["destination"];
     }
 }

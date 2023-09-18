@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { SquareState } from "@/states/square_state";
 import { Square } from "./square";
 import { BoardProps } from "./props/board_props";
+import { resetBoardStates } from "@/utilities/reset_board_states";
 
 export const Board = (props : BoardProps) => {
     let [dragMovement, setDragMovement] = useState([0, 0]);
@@ -58,6 +59,7 @@ export const Board = (props : BoardProps) => {
         let newDragMovement = [x, y];
         setDragMovement(newDragMovement);
         setHasClicked(false);
+        resetBoardStates(props.board);
     }
 
     function handleDragOver(e: React.DragEvent<HTMLDivElement>) : void{

@@ -2,7 +2,7 @@ import { AlgorithmsPropsType } from "@/components/props/algorithms_props";
 import { SquareState } from "@/states/square_state";
 import { Cell } from "@/types/cell_type";
 import { markAsVisited } from "@/utilities/mark_cell_as_visited";
-import { recreatePath } from "../utilities/recreate_path";
+import { recreatePath } from "../../utilities/recreate_path";
 
 export async function dijkstra(props: AlgorithmsPropsType): Promise<void> {
     for(let i=0; i<props.board.length; i++) {
