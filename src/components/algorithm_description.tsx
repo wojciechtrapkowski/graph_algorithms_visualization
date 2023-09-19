@@ -18,6 +18,9 @@ export const AlgorithmDescription = (props : AlgorithmDescriptionProps) => {
       case 'Dijkstra':
         description = 'Dijkstra\'s algorithm is an algorithm that <strong> does </strong> handle weighted graphs, and <strong> does guarantee </strong> the shortest path.';
         break;
+      case 'Greedy Best-First Search':
+        description='Greedy Best-First Search is an algorithm that <strong> does </strong> handle weighted graphs, and <strong> does not </strong> guarantee the shortest path.'
+        break;
       default:
         description = 'Select an algorithm to see its description.';
         break;

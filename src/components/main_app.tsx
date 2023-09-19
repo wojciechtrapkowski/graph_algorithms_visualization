@@ -16,6 +16,7 @@ import { aStar } from "@/algorithms/path_finding/a_star";
 import { generateRandomMaze } from "@/algorithms/maze_generation/random";
 import { generateRandomizedDFSMaze } from "@/algorithms/maze_generation/randomized_dfs";
 import { generateRecursiveDivisionMaze } from "@/algorithms/maze_generation/recursive_divison";
+import { greedyBestFirstSearch } from "@/algorithms/path_finding/greedy_best_first_search";
 
 export default function MainApp() {
     // Constant values
@@ -24,7 +25,7 @@ export default function MainApp() {
     const pathRecreationDelay = 500;
     const foundDestinationDelay = 1000;
     const weightedNodeWeight = 15;
-    const pathfindingAlgorithms = ["BFS", "DFS", "Dijkstra", "A*"];
+    const pathfindingAlgorithms = ["BFS", "DFS", "Dijkstra", "A*", "Greedy Best-First Search"];
     const mazeGenerationAlgorithms = ["Random", "Randomized DFS", "Recursive Division"];
     const [selectedPathFindingAlgorithm, setSelectedPathFindingAlgorithm] = useState("BFS");
     const [selectedMazeGenerationAlgorithm, setSelectedMazeGenerationAlgorithm] = useState("Random");
@@ -103,6 +104,9 @@ export default function MainApp() {
                 return;
             case "A*":
                 aStar(algorithmsProps);
+                return;
+            case "Greedy Best-First Search":
+                greedyBestFirstSearch(algorithmsProps);
                 return;
         }
     }
