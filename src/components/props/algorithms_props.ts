@@ -10,4 +10,5 @@ export type AlgorithmsPropsType = {
     isVisualizationRunning : boolean,
     setBoard: React.Dispatch<React.SetStateAction<SquareType[][]>>, 
     setIsVisualizationRunning: React.Dispatch<React.SetStateAction<boolean>>,
+    weightedNodeWeight : number,
   }

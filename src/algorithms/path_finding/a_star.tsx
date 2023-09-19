@@ -64,7 +64,6 @@ export async function aStar(props: AlgorithmsPropsType): Promise<void> {
                 newCol < numCols
             ) {
                 if (props.board[newRow][newCol].state !== SquareState.obstacle) {
-
                     // Calculate the tentative G-score
                     const tentativeGScore: number =
                         gScores[currentCell.row][currentCell.col] + props.board[newRow][newCol].weight;
@@ -75,7 +74,7 @@ export async function aStar(props: AlgorithmsPropsType): Promise<void> {
                         
                         fScores[newRow][newCol] = tentativeGScore + heuristic([newRow, newCol], props.destination);
 
-                        openSet.push({
+                        openSet.push({ 
                             row: newRow,
                             col: newCol,
                             distance: tentativeGScore,

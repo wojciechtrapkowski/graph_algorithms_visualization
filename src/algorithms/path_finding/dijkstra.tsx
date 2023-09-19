@@ -5,11 +5,6 @@ import { markAsVisited } from "@/utilities/mark_cell_as_visited";
 import { recreatePath } from "../../utilities/recreate_path";
 
 export async function dijkstra(props: AlgorithmsPropsType): Promise<void> {
-    for(let i=0; i<props.board.length; i++) {
-        for(let j=0; j<props.board[i].length; j++) {
-            console.log(props.board[i][j].weight);
-        }
-    }
     await props.setIsVisualizationRunning(true);
 
     const numRows: number = props.board.length;

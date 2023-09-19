@@ -23,6 +23,8 @@ export const Board = (props : BoardProps) => {
             return;
         }
 
+        resetBoardStates(props.board);
+
         const newBoard = [...props.board]; 
 
         if(props.board[row][col].state !== SquareState.path)  {

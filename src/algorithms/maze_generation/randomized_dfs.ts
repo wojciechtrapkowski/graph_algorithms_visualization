@@ -48,7 +48,11 @@ export async function generateRandomizedDFSMaze(props: AlgorithmsPropsType, isWe
 
                 if (Math.random() < 0.3) {
                     const newBoard = [...props.board];
-                    newBoard[newRow][newCol].state = isWeightNodePicked ? SquareState.weightNode : SquareState.obstacle;
+                    newBoard[newRow][newCol] = {
+                        ...newBoard[newRow][newCol], 
+                        state: isWeightNodePicked ? SquareState.weightNode : SquareState.obstacle, 
+                        weight: isWeightNodePicked ? props.weightedNodeWeight : 99,
+                    };
                     props.setBoard([...newBoard]);
                 }
 
