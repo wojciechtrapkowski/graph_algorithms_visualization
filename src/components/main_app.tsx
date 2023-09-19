@@ -27,10 +27,15 @@ export default function MainApp() {
     const navBarHeight = 136;
     const legendHeight = 164;
 
-    // Calculate the number of rows and columns based on the available space and cell size, substract 2 to have more space
-    let numRows = Math.floor(window.innerWidth / cellSize) - 2;
-    let numCols = Math.floor((window.innerHeight - navBarHeight - legendHeight )/ cellSize) - 2;
+    let numRows = 30;
+    let numCols = 15;
 
+    // Calculate the number of rows and columns based on the available space and cell size, substract 2 to have more space
+    if (typeof window !== "undefined") {
+        numRows = Math.floor(window.innerWidth / cellSize) - 2;
+        numCols = Math.floor((window.innerHeight - navBarHeight - legendHeight )/ cellSize) - 2;    
+    } 
+   
     // Add an event listener to check if user have changed window size
     useEffect(() => {
         window.addEventListener('resize', () => {
@@ -87,8 +92,10 @@ export default function MainApp() {
     };
 
     function createBoard() : SquareType[][] {
-        numRows = Math.floor(window.innerWidth / cellSize) - 2;
-        numCols = Math.floor((window.innerHeight - navBarHeight - legendHeight )/ cellSize) - 2;
+        if (typeof window !== "undefined") {
+            numRows = Math.floor(window.innerWidth / cellSize) - 2;
+            numCols = Math.floor((window.innerHeight - navBarHeight - legendHeight )/ cellSize) - 2;    
+        } 
         
         const newBoard = Array.from({ length: numRows }, () =>
             Array.from({ length: numCols }, () => ({ ...initialSquare }))
