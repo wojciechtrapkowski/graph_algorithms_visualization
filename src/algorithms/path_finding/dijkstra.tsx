@@ -3,6 +3,7 @@ import { SquareState } from "@/states/square_state";
 import { Cell } from "@/types/cell_type";
 import { markAsVisited } from "@/utilities/mark_cell_as_visited";
 import { recreatePath } from "../../utilities/recreate_path";
+import { showThereIsNoPathError } from "@/utilities/show_there_is_no_path_error";
 
 export async function dijkstra(props: AlgorithmsPropsType): Promise<void> {
     await props.setIsVisualizationRunning(true);
@@ -84,6 +85,6 @@ export async function dijkstra(props: AlgorithmsPropsType): Promise<void> {
             }
         }
     }
-
+    showThereIsNoPathError();
     await props.setIsVisualizationRunning(false);
 }

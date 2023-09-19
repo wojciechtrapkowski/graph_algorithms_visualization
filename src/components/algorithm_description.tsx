@@ -1,7 +1,5 @@
 import { AlgorithmDescriptionProps } from "./props/algorithm_description_props";
 
-import './css/algorithm_description.css';
-
 export const AlgorithmDescription = (props : AlgorithmDescriptionProps) => {
     let description = '';
 
@@ -27,7 +25,7 @@ export const AlgorithmDescription = (props : AlgorithmDescriptionProps) => {
     }
   
     return (
-      <div className="description">
+      <div className="text-xl text-center mt-8 mb-2 mx-3">
         <p dangerouslySetInnerHTML={{ __html: description }}></p>
       </div>
     );  

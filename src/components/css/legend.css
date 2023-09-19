@@ -1,13 +1,3 @@
-.legend {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 8rem 20rem 10rem 20rem;
-}
-.legend div {
-    display: flex;
-    align-items: center;
-}
 .legend svg {
     width: 1.5rem;
     height: 1.5rem;

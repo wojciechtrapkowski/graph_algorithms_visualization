@@ -5,6 +5,8 @@ import { markAsVisited } from "@/utilities/mark_cell_as_visited";
 import { resetBoardStates } from "@/utilities/reset_board_states";
 
 export async function generateRandomizedDFSMaze(props: AlgorithmsPropsType, isWeightNodePicked : boolean): Promise<void> {
+    await props.setIsVisualizationRunning(true);
+
     const newBoard = [...props.board];
     resetBoardStates(newBoard, true);
     props.setBoard([...newBoard]);
