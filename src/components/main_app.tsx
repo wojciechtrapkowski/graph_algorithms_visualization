@@ -1,4 +1,5 @@
 'use client';
+
 import { SquareState } from "@/states/square_state";
 import { useEffect, useState } from "react";
 import { Board } from "./board";
@@ -19,6 +20,7 @@ import { generateRecursiveDivisionMaze } from "@/algorithms/maze_generation/recu
 import { greedyBestFirstSearch } from "@/algorithms/path_finding/greedy_best_first_search";
 import { ToastContainer, toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { BarLoader } from "react-spinners";
 
 export default function MainApp() {
     // Constant values
@@ -27,22 +29,18 @@ export default function MainApp() {
     const navBarHeight = 136;
     const legendHeight = 164;
 
-    let numRows = 30;
-    let numCols = 15;
+    const [numRows, setNumRows] = useState(Math.floor(window.innerWidth / cellSize) - 2);
+    const [numCols, setNumCols] = useState(Math.floor((window.innerHeight - navBarHeight - legendHeight) / cellSize) - 2);
 
-    // Calculate the number of rows and columns based on the available space and cell size, substract 2 to have more space
-    if (typeof window !== "undefined") {
-        numRows = Math.floor(window.innerWidth / cellSize) - 2;
-        numCols = Math.floor((window.innerHeight - navBarHeight - legendHeight )/ cellSize) - 2;    
-    } 
-   
     // Add an event listener to check if user have changed window size
-    useEffect(() => {
-        window.addEventListener('resize', () => {
-            setBoard([...createBoard()]);
-          });
+    useEffect(() =>  {
+        // We don't have to check whether window object is undefined, because we render everything on client side
+        window.addEventListener('resize', handleScreenSize);   
     }, []);
-      
+
+    useEffect(() => {
+        setBoard([...createBoard()]);
+    }, [numRows, numCols])
 
     const pathRecreationDelay = 500;
     const foundDestinationDelay = 1000;
@@ -91,12 +89,16 @@ export default function MainApp() {
         weightedNodeWeight: weightedNodeWeight,
     };
 
-    function createBoard() : SquareType[][] {
-        if (typeof window !== "undefined") {
-            numRows = Math.floor(window.innerWidth / cellSize) - 2;
-            numCols = Math.floor((window.innerHeight - navBarHeight - legendHeight )/ cellSize) - 2;    
-        } 
+    function handleScreenSize() {
+        // Calculate the number of rows and columns based on the available space and cell size, substract 2 to have more space
+        const newNumRows = Math.floor(window.innerWidth / cellSize) - 2;
+        const newNumCols = Math.floor((window.innerHeight - navBarHeight - legendHeight) / cellSize) - 2;
         
+        setNumRows(newNumRows);
+        setNumCols(newNumCols);
+    }
+
+    function createBoard() : SquareType[][] {
         const newBoard = Array.from({ length: numRows }, () =>
             Array.from({ length: numCols }, () => ({ ...initialSquare }))
         );
@@ -203,8 +205,7 @@ export default function MainApp() {
                 weightedNodeWeight={weightedNodeWeight}
             />
             <Legend />
-            <ToastContainer
-                />
-
-        </div>
+            <ToastContainer />
+    </div>
+        
 );}

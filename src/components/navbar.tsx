@@ -1,3 +1,5 @@
+'use client';
+ 
 import React, { useState } from "react";
 import { NavbarProps } from "./props/navbar_props";
 
