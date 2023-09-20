@@ -125,19 +125,19 @@ export const Board = (props : BoardProps) => {
                 <div key={rowIndex}>
                     {row.map((cellValue, colIndex) => (
                     <div
-                    key={(rowIndex+1)*(colIndex+1)}
-                    draggable={(!(props.isVisualizationRunning) && validateElementToDrag(rowIndex, colIndex))}
-                    onDragStart={(e) => handleDragStart(e, rowIndex, colIndex)}
-                    onDragOver={(e) => handleDragOver(e)}
-                    onDrop={(e) => handleDrop(e, rowIndex, colIndex)}
-                    onMouseEnter={() => handleMouseOver(rowIndex, colIndex)}>
-                        <button
-                            key={(colIndex+1)*( rowIndex+1)}
-                            className={`${squareClasses} ${props.board[rowIndex][colIndex].classes.join(' ')}`}
-                            onClick={() => onBoardClick(rowIndex, colIndex)}
-                            >
-                            <Square cell={cellValue} />
-                        </button>
+                        key={(rowIndex+1)*(colIndex+1)}
+                        draggable={(!(props.isVisualizationRunning) && validateElementToDrag(rowIndex, colIndex))}
+                        onDragStart={(e) => handleDragStart(e, rowIndex, colIndex)}
+                        onDragOver={(e) => handleDragOver(e)}
+                        onDrop={(e) => handleDrop(e, rowIndex, colIndex)}
+                        onMouseEnter={() => handleMouseOver(rowIndex, colIndex)}>
+                            <button
+                                key={(colIndex+1)*( rowIndex+1)}
+                                className={`${squareClasses} ${props.board[rowIndex][colIndex].classes.join(' ')}`}
+                                onClick={() => onBoardClick(rowIndex, colIndex)}
+                                >
+                                <Square cell={cellValue} />
+                            </button>
                     </div>
                     ))}
                 </div>
